@@ -3,7 +3,10 @@
    License: none (public domain)
 */
 
-
+html, body {
+    min-height: 100%;
+    margin: 0;
+}
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -32,7 +35,6 @@ footer, header, hgroup, menu, nav, section {
 body {
     line-height: 1;
     font-family: 'Space Grotesk', sans-serif;
-    min-height: 100vh;
     background: linear-gradient(#041833,#04244F,#154580);
     background-repeat: no-repeat;
     background-position: center;
@@ -331,7 +333,12 @@ table {
     display: flex;
     justify-content: space-between;
 }
-
+.form-container{
+    display: flex;
+    width: 100%;
+    min-height: 340px;
+    margin-bottom: 10vh;
+}
 .rodape {
     background-color: #04244F;
     width: 100%;

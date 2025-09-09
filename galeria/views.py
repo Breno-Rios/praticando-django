@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404,redirect
 from galeria.models import Fotografia
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
-
+@login_required
 def index (request):
   if not request.user.is_authenticated:
     messages.error(request, "Usuário não logado!")
@@ -15,6 +16,7 @@ def imagem (request,foto_id):
   fotografia = get_object_or_404(Fotografia, pk=foto_id)
   return render(request, 'galeria/imagem.html', {"fotografia":fotografia})
 
+@login_required
 def buscar(request):
   if not request.user.is_authenticated:
     messages.error(request, "Usuário não logado!")

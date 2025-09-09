@@ -3,7 +3,6 @@
 {% block content %}
 
 <section class="form-container">
-
   <form action="{% url 'login' %}" method="post">
     {% csrf_token %}
     <div class="row">
@@ -17,6 +16,9 @@
     <div>
       <button type="submit" class="btn btn-success col-12" style="padding: top 5px;">Logar</button>
     </div>
+    <a href="http://127.0.0.1:8000/accounts/github/login/?process=login" class="btn btn-outline-primary">
+      Entrar com GitHub
+    </a>
   </form>
 </section>
 </main>

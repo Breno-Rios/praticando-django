@@ -31,7 +31,7 @@ def buscar(request):
     
     fotografias = Fotografia.objects.filter(name__icontains=nome_a_buscar)
 
-  return render(request, 'galeria/buscar.html', {"cards":fotografias})
+  return render(request, 'galeria/index.html', {"cards":fotografias})
 
 @login_required
 def nova_foto(request):
@@ -47,6 +47,7 @@ def nova_foto(request):
 
   return render(request, 'galeria/nova_imagem.html', {'form': form})
 
+@login_required
 def editar_foto(request, foto_id):
   fotografia = Fotografia.objects.get(id= foto_id)
   form = FotografiaForms(instance=fotografia)
@@ -58,11 +59,16 @@ def editar_foto(request, foto_id):
       messages.success(request, 'fotografia editada com sucesso!')
       return redirect('index')
   return render(request, 'galeria/editar_imagem.html', {'form': form, 'form_id': foto_id})
-  
+
+@login_required
 def deletar_foto(request, foto_id):
     fotografia = Fotografia.objects.get(id=foto_id)
     fotografia.delete()
     messages.success(request, 'Deleção feita com sucesso!')
     return redirect('index')
 
+@login_required
+def filtro(request,categoria):
+  fotografias = Fotografia.objects.order_by("data_fotografia").filter(publicada=True, categoria=categoria)
+  return render(request, 'galeria/index.html', {"cards":fotografias})
 

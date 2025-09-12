@@ -3,6 +3,8 @@ from galeria.models import Fotografia
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
+from galeria.forms import FotografiaForms
+
 @login_required
 def index (request):
   if not request.user.is_authenticated:
@@ -24,7 +26,43 @@ def buscar(request):
   
   if "buscar" in request.GET:
     nome_a_buscar = request.GET['buscar']
-    if nome_a_buscar:
-      fotografias = Fotografia.objects.filter(name__icontains=nome_a_buscar)
+    if not nome_a_buscar:
+      return redirect('index')
+    
+    fotografias = Fotografia.objects.filter(name__icontains=nome_a_buscar)
 
   return render(request, 'galeria/buscar.html', {"cards":fotografias})
+
+@login_required
+def nova_foto(request):
+
+  form = FotografiaForms
+
+  if request.method == 'POST':
+    form = FotografiaForms(request.POST, request.FILES)
+    if form.is_valid():
+      form.save()
+      messages.success(request, 'Nova fotografia cadastrada!')
+      return redirect('index')
+
+  return render(request, 'galeria/nova_imagem.html', {'form': form})
+
+def editar_foto(request, foto_id):
+  fotografia = Fotografia.objects.get(id= foto_id)
+  form = FotografiaForms(instance=fotografia)
+
+  if request.method == 'POST':
+    form = FotografiaForms(request.POST, request.FILES, instance= fotografia)
+    if form.is_valid():
+      form.save()
+      messages.success(request, 'fotografia editada com sucesso!')
+      return redirect('index')
+  return render(request, 'galeria/editar_imagem.html', {'form': form, 'form_id': foto_id})
+  
+def deletar_foto(request, foto_id):
+    fotografia = Fotografia.objects.get(id=foto_id)
+    fotografia.delete()
+    messages.success(request, 'Deleção feita com sucesso!')
+    return redirect('index')
+
+
